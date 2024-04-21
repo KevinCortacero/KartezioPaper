@@ -4,9 +4,9 @@
 ## Package Description
 Kartezio is a modular Cartesian Genetic Programming framework that generates fully transparent and easily interpretable image processing pipelines. This package contains the main scripts used to publish the article.
 
+Link to main Python Package: [Kartezio](https://github.com/KevinCortacero/Kartezio)
 Link to publication: [Evolutionary design of explainable algorithms for biomedical image segmentation](https://www.nature.com/articles/s41467-023-42664-x).
-
-Link to website: [kartezio.com](https://www.kartezio.com)
+Link to official website: [kartezio.com](https://www.kartezio.com)
 
 ### Requirements
 
