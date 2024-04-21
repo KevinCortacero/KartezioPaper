@@ -15,7 +15,7 @@ python3 -m pip install virtualenv
 python3 -m venv <path/to/venv/venv_name>
 source <path/to/venv/venv_name>/bin/activate
 pip install --upgrade pip
-(venv_name)$ pip install kartezio==1.0.0a1
+pip install kartezio==1.0.0a1
 ```
 
 
