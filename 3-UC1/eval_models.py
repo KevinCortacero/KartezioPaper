@@ -1,11 +1,12 @@
 import numpy as np
 import pandas as pd
-
-from kartezio.easy import print_stats
 from kartezio.dataset import read_dataset
+from kartezio.easy import print_stats
 from kartezio.fitness import FitnessIOU
 from kartezio.inference import ModelPool
+from kartezio.preprocessing import TransformToHSV
 
+preprocessing = TransformToHSV()
 scores_all = {}
 pool = ModelPool(f"./models", FitnessIOU(), regex="*/elite.json").to_ensemble()
 dataset = read_dataset(f"./dataset", counting=True)
@@ -30,17 +31,17 @@ scores_test = []
 scores_training = []
 for i, model in enumerate(pool.models):
     # Test set
-    _, fitness, _ = model.eval(dataset, subset="test")
+    _, fitness, _ = model.eval(dataset, subset="test", preprocessing=preprocessing)
     scores_test.append(1.0 - fitness)
 
     # Training set
-    _, fitness, _ = model.eval(dataset, subset="train")
+    _, fitness, _ = model.eval(dataset, subset="train", preprocessing=preprocessing)
     scores_training.append(1.0 - fitness)
 
 
 scores_all[f"training"] = scores_training
 scores_all[f"test"] = scores_test
-print_stats(scores_training, "AP50", "training set")
-print_stats(scores_test, "AP50", "test set")
+print_stats(scores_training, "IOU", "training set")
+print_stats(scores_test, "IOU", "test set")
 
 pd.DataFrame(scores_all).to_csv("./results/results.csv", index=False)

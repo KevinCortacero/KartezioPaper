@@ -1,10 +1,9 @@
 from kartezio.apps.instance_segmentation import create_instance_segmentation_model
 from kartezio.dataset import read_dataset
-from kartezio.training import train_model
 from kartezio.endpoint import EndpointWatershed
-from kartezio.stacker import StackerMean
 from kartezio.preprocessing import Format3D
-
+from kartezio.stacker import StackerMean
+from kartezio.training import train_model
 
 DATASET = "./dataset"
 OUTPUT = "./new_trained_models"
@@ -27,4 +26,10 @@ if __name__ == "__main__":
     )
 
     dataset = read_dataset(DATASET)
-    elite, _ = train_model(model, dataset, OUTPUT, preprocessing=preprocessing, callback_frequency=frequency)
+    elite, _ = train_model(
+        model,
+        dataset,
+        OUTPUT,
+        preprocessing=preprocessing,
+        callback_frequency=frequency,
+    )

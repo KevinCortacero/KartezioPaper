@@ -1,16 +1,17 @@
 import cv2
 import numpy as np
-from numena.image.basics import image_normalize
-from numena.io.drive import Directory
-
 from kartezio.dataset import read_dataset
 from kartezio.fitness import FitnessIOU
-from kartezio.inference import EnsembleModel, ModelPool
+from kartezio.inference import ModelPool
+from kartezio.preprocessing import TransformToHSV
+from numena.image.basics import image_normalize
+
+preprocessing = TransformToHSV().call
 
 THRESHOLD = 0.35
 ensemble = ModelPool(f"./models", FitnessIOU(), regex="*/elite.json").to_ensemble()
 dataset = read_dataset(f"./dataset", counting=True, filename="dataset_upsample.csv")
-p_test = ensemble.predict(dataset.test_x)
+p_test = ensemble.predict(dataset.test_x, reformat_x=preprocessing)
 
 
 for i in range(15):
@@ -27,5 +28,3 @@ for i in range(15):
 
     cv2.imwrite(f"heatmap_upscaled_{i}.png", overlayed_heatmap)
     cv2.imwrite(f"raw_{i}.png", dataset.test_v[i])
-
-

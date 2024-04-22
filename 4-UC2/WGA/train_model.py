@@ -1,9 +1,8 @@
 from kartezio.apps.instance_segmentation import create_instance_segmentation_model
-from kartezio.endpoint import LocalMaxWatershed
 from kartezio.dataset import read_dataset
-from kartezio.training import train_model
+from kartezio.endpoint import LocalMaxWatershed
 from kartezio.preprocessing import SelectChannels
-
+from kartezio.training import train_model
 
 CHANNEL_WGA = 0
 preprocessing = SelectChannels([CHANNEL_WGA])
@@ -23,4 +22,10 @@ if __name__ == "__main__":
         endpoint=LocalMaxWatershed(threshold=1, markers_distance=5),
     )
     dataset = read_dataset(DATASET)
-    elite, _ = train_model(model, dataset, OUTPUT, preprocessing=preprocessing, callback_frequency=frequency)
+    elite, _ = train_model(
+        model,
+        dataset,
+        OUTPUT,
+        preprocessing=preprocessing,
+        callback_frequency=frequency,
+    )

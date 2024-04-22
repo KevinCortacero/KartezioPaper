@@ -2,11 +2,16 @@ import argparse
 
 from kartezio.apps.instance_segmentation import create_instance_segmentation_model
 from kartezio.dataset import read_dataset
+from kartezio.endpoint import (
+    EndpointEllipse,
+    EndpointHoughCircle,
+    EndpointLabels,
+    EndpointWatershed,
+    LocalMaxWatershed,
+)
+from kartezio.preprocessing import TransformToHED, TransformToHSV
 from kartezio.training import train_model
-from kartezio.endpoint import EndpointLabels, EndpointWatershed, LocalMaxWatershed, EndpointEllipse, EndpointHoughCircle
 from numena.io.drive import Directory
-from kartezio.preprocessing import TransformToHSV, TransformToHED
-
 
 RUNS = 10
 ITERATIONS = 20000
@@ -16,21 +21,19 @@ COLORS_SCALES = ["RGB", "HSV", "HED"]
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('output')
-    parser.add_argument('dataset')
-    parser.add_argument('run', type=int)
-    parser.add_argument('endpoint', type=str)
+    parser.add_argument("output")
+    parser.add_argument("dataset")
+    parser.add_argument("run", type=int)
+    parser.add_argument("endpoint", type=str)
     args = parser.parse_args()
     output = args.output
     dataset_path = args.dataset
     run_number = args.run
     endpoint_name = args.endpoint
 
-
     color_scale_index = (run_number - 1) // RUNS
     color_scale = COLORS_SCALES[color_scale_index]
     output_directory = Directory(output).next(endpoint_name).next(color_scale)
-
 
     outputs = 1
     if endpoint_name == "MCW":
@@ -41,7 +44,9 @@ if __name__ == "__main__":
     elif endpoint_name == "ELLIPSE":
         endpoint = EndpointEllipse(min_axis=10, max_axis=65)
     elif endpoint_name == "HCT":
-        endpoint = EndpointHoughCircle(min_dist=15, p1=32, p2=16, min_radius=5, max_radius=32)
+        endpoint = EndpointHoughCircle(
+            min_dist=15, p1=32, p2=16, min_radius=5, max_radius=32
+        )
     elif endpoint_name == "LABELS":
         endpoint = EndpointLabels()
 
@@ -51,9 +56,14 @@ if __name__ == "__main__":
     elif color_scale == "HED":
         preprocessing = TransformToHED()
 
-
     model = create_instance_segmentation_model(
-        ITERATIONS, LAMBDA, inputs=3, outputs=outputs, endpoint=endpoint,
+        ITERATIONS,
+        LAMBDA,
+        inputs=3,
+        outputs=outputs,
+        endpoint=endpoint,
     )
     dataset = read_dataset(dataset_path)
-    elite, _ = train_model(model, dataset, str(output_directory._path), preprocessing=preprocessing)
+    elite, _ = train_model(
+        model, dataset, str(output_directory._path), preprocessing=preprocessing
+    )

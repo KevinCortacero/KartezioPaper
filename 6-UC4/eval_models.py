@@ -1,13 +1,10 @@
-"""Evaluates the models on CIL dataset"""
 import numpy as np
 import pandas as pd
-
-from kartezio.easy import print_stats
-from train_model import preprocessing
 from kartezio.dataset import read_dataset
+from kartezio.easy import print_stats
 from kartezio.fitness import FitnessAP
 from kartezio.inference import ModelPool
-
+from train_model import preprocessing
 
 scores_all = {}
 pool = ModelPool(f"./models", FitnessAP(), regex="*/elite.json")

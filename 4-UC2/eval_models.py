@@ -1,14 +1,16 @@
 import numpy as np
 import pandas as pd
+from DiO.train_model import preprocessing as preprocessing_DiO
 from kartezio.dataset import read_dataset
+from kartezio.easy import print_stats
 from kartezio.fitness import FitnessAP
 from kartezio.inference import ModelPool
 from WGA.train_model import preprocessing as preprocessing_WGA
-from DiO.train_model import preprocessing as preprocessing_DiO
-from kartezio.easy import print_stats
 
 scores_all = {}
-for channel, preprocessing in zip(["WGA", "DiO"], [preprocessing_WGA, preprocessing_DiO]):
+for channel, preprocessing in zip(
+    ["WGA", "DiO"], [preprocessing_WGA, preprocessing_DiO]
+):
     pool = ModelPool(f"./{channel}/models", FitnessAP(), regex="*/elite.json")
     dataset = read_dataset(f"./{channel}/dataset", counting=True)
     annotations_test = 0

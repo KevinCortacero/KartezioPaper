@@ -2,7 +2,6 @@ from kartezio.easy import generate_python_class
 from kartezio.endpoint import LocalMaxWatershed
 from kartezio.inference import CodeModel
 
-
 MODEL_WGA = "973700-c4d70092-f9da-4832-85d1-564e23741d66"
 MODEL_DIO = "375414-784bc9d8-43d7-4c07-934d-487f4fcc4f42"
 
@@ -10,7 +9,10 @@ MODEL_DIO = "375414-784bc9d8-43d7-4c07-934d-487f4fcc4f42"
 # ============================== GENERATED CODE TO COPY ================================
 class ModelWGA(CodeModel):
     def __init__(self):
-        super().__init__(endpoint=LocalMaxWatershed(**{'threshold': 1, 'markers_distance': 5}))
+        super().__init__(
+            endpoint=LocalMaxWatershed(**{"threshold": 1, "markers_distance": 5})
+        )
+
     def _parse(self, X):
         x_0 = X[0]
         node_1 = self.call_node("morph_tophat", [x_0], [82, 174])
@@ -23,13 +25,18 @@ class ModelWGA(CodeModel):
         y_0 = node_19
         Y = [y_0]
         return Y
+
+
 # ======================================================================================
 
 
 # ============================== GENERATED CODE TO COPY ================================
 class ModelDiO(CodeModel):
     def __init__(self):
-        super().__init__(endpoint=LocalMaxWatershed(**{'threshold': 1, 'markers_distance': 5}))
+        super().__init__(
+            endpoint=LocalMaxWatershed(**{"threshold": 1, "markers_distance": 5})
+        )
+
     def _parse(self, X):
         x_0 = X[0]
         node_1 = self.call_node("canny", [x_0], [33, 69])
@@ -42,6 +49,8 @@ class ModelDiO(CodeModel):
         y_0 = node_28
         Y = [y_0]
         return Y
+
+
 # ======================================================================================
 
 

@@ -1,17 +1,19 @@
 """Evaluates the models on CIL dataset"""
-import pandas as pd
-from numena.io.drive import Directory
 
+import pandas as pd
 from kartezio.dataset import read_dataset
+from kartezio.easy import print_stats
 from kartezio.fitness import FitnessAP
 from kartezio.inference import ModelPool
-
+from numena.io.drive import Directory
 from train_model import preprocessing
-from kartezio.easy import print_stats
 
-
-print("Warning! This evaluation must be done with Python 3.7 to reproduce experimental results!")
-print("Using Python 3.8+ might results in small differences due to a change of scipy stats module.")
+print(
+    "Warning! This evaluation must be done with Python 3.7 to reproduce experimental results!"
+)
+print(
+    "Using Python 3.8+ might results in small differences due to a change of scipy stats module."
+)
 print("The training has been done with Python 3.7, evaluation might use the same.")
 print("Exception: for n = 30/40/60/70/80, these are trained with python 3.8")
 
@@ -56,7 +58,6 @@ for n in N_IMAGES:
         annotations_test.append(total_annotations)
         _, fitness, _ = model.eval(dataset, subset="test", preprocessing=preprocessing)
         scores_test.append(1.0 - fitness)
-
 
         # Training set
         total_annotations = 0
